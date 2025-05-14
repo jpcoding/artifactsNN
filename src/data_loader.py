@@ -66,6 +66,9 @@ class PairedBinaryNumpyDataset(Dataset):
         if len(self.shape) == 2:
             input_array = input_array[np.newaxis, :, :]
             target_array = target_array[np.newaxis, :, :]
+        elif len(self.shape) == 3:
+            input_array = input_array[np.newaxis, :, :, :]  # [1, D, H, W]
+            target_array = target_array[np.newaxis, :, :, :]
 
         input_array -= self.data_mean
         if self.is_residual:

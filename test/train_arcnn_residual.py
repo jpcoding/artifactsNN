@@ -25,8 +25,10 @@ parser.add_argument('--outputs_dir', type=str, default='outputs', help='output d
 parser.add_argument('-lr', '--learning_rate', type=float, default=1e-4, help='Learning rate for the optimizer') 
 parser.add_argument('--model', type=str, default='arcnn', help='model to use (arcnn, srcnn, dncnn)') 
 parser.add_argument('--batch_size', type=int, default=1000, help='Batch size for training and testing') 
+parser.add_argument('--savemodel', type=str, help='save the model') 
 args = parser.parse_args()
 model_str = args.model 
+save_model = args.savemodel  
 if not os.path.exists(args.outputs_dir): 
     os.makedirs(args.outputs_dir) 
 
@@ -49,8 +51,8 @@ target_files = sorted(glob.glob(os.path.join(target_dir, "*.f32")))
 # threshold = 2.0
 # valid_indices = np.where(entropy > threshold)[0]
 # sample number 10000 
-filtered_input_files = input_files[:10000] 
-filtered_target_files = target_files[:10000] 
+filtered_input_files = input_files[:] 
+filtered_target_files = target_files[:] 
 
 # Split the file lists first
 n_total = len(filtered_input_files)
@@ -231,11 +233,11 @@ if args.train == "yes":
         torch.save(model.state_dict(), os.path.join(args.outputs_dir, '{}_epoch_{}.pth'.format(f'cuda_{model_str}', epoch)))
 
     
-    torch.save(best_state, f"best_residual_model_{model_str}.pth")
+    torch.save(best_state, f"best_residual_model_{model_str}_{save_model}.pth")
 
 # ---- TEST ----
 
-model.load_state_dict(torch.load(f"best_residual_model_{model_str}.pth", map_location=device))
+model.load_state_dict(torch.load(f"best_residual_model_{model_str}_{save_model}.pth", map_location=device))
 model.eval()
 test_loss = 0.0
 

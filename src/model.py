@@ -221,3 +221,27 @@ class DnCNN(nn.Module):
 
     def forward(self, x):
         return self.dncnn(x)
+    
+
+class DnCNN3D(nn.Module):
+    def __init__(self, in_channels=1, out_channels=1, num_filters=64, depth=20):
+        super(DnCNN3D, self).__init__()
+        layers = []
+
+        # First layer (Conv3D + ReLU)
+        layers.append(nn.Conv3d(in_channels, num_filters, kernel_size=3, padding=1, bias=True))
+        layers.append(nn.ReLU(inplace=True))
+
+        # Middle layers (Conv3D + BN3D + ReLU)
+        for _ in range(depth - 2):
+            layers.append(nn.Conv3d(num_filters, num_filters, kernel_size=3, padding=1, bias=False))
+            layers.append(nn.BatchNorm3d(num_filters))
+            layers.append(nn.ReLU(inplace=True))
+
+        # Last layer (Conv3D only)
+        layers.append(nn.Conv3d(num_filters, out_channels, kernel_size=3, padding=1, bias=True))
+
+        self.dncnn = nn.Sequential(*layers)
+
+    def forward(self, x):
+        return self.dncnn(x)
