@@ -1,5 +1,7 @@
 import torch
 import torch.nn as nn
+import torch.nn.functional as F
+
 
 class ARCNN(nn.Module):
     def __init__(self):
@@ -245,3 +247,106 @@ class DnCNN3D(nn.Module):
 
     def forward(self, x):
         return self.dncnn(x)
+
+
+
+class DoubleConv3D(nn.Module):
+    def __init__(self, in_ch, out_ch):
+        super().__init__()
+        self.double_conv = nn.Sequential(
+            nn.Conv3d(in_ch, out_ch, kernel_size=3, padding=1),
+            nn.BatchNorm3d(out_ch),
+            nn.ReLU(inplace=True),
+            nn.Conv3d(out_ch, out_ch, kernel_size=3, padding=1),
+            nn.BatchNorm3d(out_ch),
+            nn.ReLU(inplace=True)
+        )
+
+    def forward(self, x):
+        return self.double_conv(x)
+
+class DownBlock3D(nn.Module):
+    def __init__(self, in_ch, out_ch):
+        super().__init__()
+        self.maxpool_conv = nn.Sequential(
+            nn.MaxPool3d(2),
+            DoubleConv3D(in_ch, out_ch) 
+        )
+
+    def forward(self, x):
+        return self.maxpool_conv(x)
+
+class UpBlock3D(nn.Module):
+    def __init__(self, in_ch_up, in_ch_skip, out_ch, use_upsample=True):
+        super().__init__()
+        self.use_upsample = use_upsample
+
+        if use_upsample:
+            self.upsample = nn.Sequential(
+                nn.Upsample(scale_factor=2, mode='trilinear', align_corners=False),
+                nn.Conv3d(in_ch_up, in_ch_up // 2, kernel_size=1)
+            )
+            conv_in_channels = (in_ch_up // 2) + in_ch_skip
+        else:
+            self.upsample = nn.ConvTranspose3d(in_ch_up, in_ch_up // 2, kernel_size=2, stride=2)
+            conv_in_channels = (in_ch_up // 2) + in_ch_skip
+
+        self.conv = DoubleConv3D(conv_in_channels, out_ch)
+
+    def forward(self, x, skip):
+        x = self.upsample(x)
+
+        if x.shape[2:] != skip.shape[2:]:
+            diff_D = skip.shape[2] - x.shape[2]
+            diff_H = skip.shape[3] - x.shape[3]
+            diff_W = skip.shape[4] - x.shape[4]
+
+            padding = [
+                diff_W // 2, diff_W - diff_W // 2,  # Width padding
+                diff_H // 2, diff_H - diff_H // 2,  # Height padding
+                diff_D // 2, diff_D - diff_D // 2   # Depth padding
+            ]
+            x = F.pad(x, padding)
+
+        x = torch.cat([x, skip], dim=1)
+        return self.conv(x)
+
+
+class UNet3D(nn.Module):
+    def __init__(self, in_channels=1, out_channels=1, base_filters=64, use_upsample_in_upblock=True):
+        super().__init__()
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.base_filters = base_filters
+        self.use_upsample_in_upblock = use_upsample_in_upblock
+        # Encoding Path
+        self.enc1 = DoubleConv3D(in_channels, base_filters)      # Input: 1, Output: 64
+        self.pool1 = nn.MaxPool3d(2) # Output: 64
+        self.enc2 = DoubleConv3D(base_filters, base_filters * 2) # Input: 64, Output: 128
+        self.pool2 = nn.MaxPool3d(2) # Output: 128
+        self.enc3 = DoubleConv3D(base_filters * 2, base_filters * 4) # Input: 128, Output: 256
+        self.pool3 = nn.MaxPool3d(2) # Output: 256
+        # Bottleneck
+        self.bottleneck = DoubleConv3D(base_filters * 4, base_filters * 8) # Input: 256, Output: 512
+        # Decoding Path
+        self.up3 = UpBlock3D(base_filters * 8, base_filters * 4, base_filters * 4, use_upsample=self.use_upsample_in_upblock)
+        self.up2 = UpBlock3D(base_filters * 4, base_filters * 2, base_filters * 2, use_upsample=self.use_upsample_in_upblock)
+        self.up1 = UpBlock3D(base_filters * 2, base_filters, base_filters, use_upsample=self.use_upsample_in_upblock)
+        self.out_conv = nn.Conv3d(base_filters, out_channels, kernel_size=1) # Input: 64, Output: 1 (or N)
+
+    def forward(self, x):
+        # Encoding Path
+        e1 = self.enc1(x)
+        p1 = self.pool1(e1)
+        e2 = self.enc2(p1)
+        p2 = self.pool2(e2)
+        e3 = self.enc3(p2)
+        p3 = self.pool3(e3) 
+        # Bottleneck
+        b = self.bottleneck(p3)
+        # Decoding Path
+        d3 = self.up3(b, e3)
+        d2 = self.up2(d3, e2)
+        d1 = self.up1(d2, e1)
+        output = self.out_conv(d1)
+        return output

@@ -42,6 +42,7 @@ parser.add_argument('-e', '--eb', type=float, required=True, help='error bound')
 parser.add_argument('-d', '--dtype', type=str, default='f32', help='data type')
 parser.add_argument('-n', '--num', type=int, default=1, help='dimension of data') 
 parser.add_argument('-s', '--shape', nargs='+', type=int, default=1, help='shape of data')
+parser.add_argument('--prefix', type=str, default='data', help='prefix of the data folder') 
 
 
 
@@ -51,16 +52,20 @@ numpy_data_type = np.float32 if args.dtype == 'f32' else np.float64
 
 
 orig_data = np.fromfile(args.input, dtype=numpy_data_type).reshape(args.shape)  
-precision = 1.0 /(2* args.eb) 
+rel_eb = args.eb 
+abs_eb = (orig_data.max() - orig_data.min()) * rel_eb
+precision = 1.0 /(2* abs_eb) 
 quantized_data, quant_idx = quantization(orig_data, precision)
 
 if not os.path.exists(args.output):
     os.makedirs(args.output)
 subfolder_name = os.path.basename(args.input)
+subfolder_name = args.prefix +'_' + subfolder_name
 # creat subfolder 
 subfolder_path = os.path.join(args.output, subfolder_name)
 if not os.path.exists(subfolder_path):
     os.makedirs(subfolder_path)
+    
     
 subsubfolders = ['quantized_data', 'orig_data'] 
 for subsubfolder in subsubfolders:
