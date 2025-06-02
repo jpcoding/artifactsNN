@@ -1,22 +1,23 @@
 import sys  
 import os 
 import numpy as np
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'))) 
-from data_loader import PairedBlockDataset
-# from torch_arcnn import ARCNN, ARCNNResidual 
-from model import  ARCNN, SRCNN, DnCNN3D, UNet3D 
-from torch.utils.data import DataLoader,random_split
+from torch.utils.data import DataLoader
 import torch 
 from torch import nn, optim 
 import glob 
 import argparse
 from types import SimpleNamespace
-from train_model import train_residual_3d 
-from test_model  import test_dncnn3d 
 from torch.utils.data import DataLoader, Subset, RandomSampler
 import pandas as pd 
 from tqdm import tqdm
 import re 
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))) 
+from src.datasets.data_loader import PairedBlockDataset 
+from src.models.model import ARCNN, SRCNN, DnCNN3D, UNet3D 
+from src.training.train_model import train_residual_3d 
+from src.training.test_model  import test_residual_3d 
+
 
 
 
@@ -75,23 +76,24 @@ def select_fields(file_list, field_names):
 # pick_fields = ["U", "V", "W"]
 
 pick_fields = ["U"]
+timesteps = slice(0,1)
 # pick_fields = ["U", "V", "W", "TKE", "EPSILON", "OMEGA"] 
 train_input_files = sorted(glob.glob(os.path.join(args.train_input, "*.f32")))
 train_target_files = sorted(glob.glob(os.path.join(args.train_target, "*.f32")))
 val_input_files = sorted(glob.glob(os.path.join(args.val_input, "*.f32")))
 val_target_files = sorted(glob.glob(os.path.join(args.val_target, "*.f32")))
 
-train_input_files = select_fields(train_input_files, pick_fields    ) 
-train_target_files = select_fields(train_target_files, pick_fields   )
-val_input_files = select_fields(val_input_files, pick_fields     )
-val_target_files = select_fields(val_target_files, pick_fields   )
+train_input_files = select_fields(train_input_files, pick_fields    )[timesteps]
+train_target_files = select_fields(train_target_files, pick_fields   )[timesteps]
+val_input_files = select_fields(val_input_files, pick_fields     )[timesteps]
+val_target_files = select_fields(val_target_files, pick_fields   )[timesteps]
 
 
 if args.test_input is not None and args.test_target is not None: 
     test_input_files = sorted(glob.glob(os.path.join(args.test_input, "*.f32")))
     test_target_files = sorted(glob.glob(os.path.join(args.test_target, "*.f32")))
-    test_input_files = select_fields(test_input_files, pick_fields   )
-    test_target_files = select_fields(test_target_files, pick_fields     )
+    test_input_files = select_fields(test_input_files, pick_fields   )[timesteps]
+    test_target_files = select_fields(test_target_files, pick_fields     )[timesteps]
 else:
     test_input_files = None
     test_target_files = None

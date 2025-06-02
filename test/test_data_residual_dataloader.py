@@ -1,12 +1,14 @@
 import sys  
 import os 
 import numpy as np
-xffrom data_loader import BinaryNumpyDataset,PairedBinaryNumpyDatasetResidualE
-from stats import get_psnr 
 from torch.utils.data import DataLoader
-import torch 
 import glob
 import argparse
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))) 
+from src.datasets.data_loader import PairedBinaryNumpyDatasetResidualE
+from utils.stats import get_psnr
+
+
 
 # Example usage of BinaryNumpyDataset
 # This is a simple example. You can modify the file_list and shape as per your requirements.

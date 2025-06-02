@@ -5,7 +5,7 @@ import argparse
 import pandas as pd 
 from concurrent.futures import ThreadPoolExecutor as executor 
 
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src/utils/')))
 
 import stats 
 

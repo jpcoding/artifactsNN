@@ -1,20 +1,24 @@
 import torch
 import torch.nn.functional as F
 import math
+import sys 
+sys.path.append("..")  # Adjust the path as needed 
+from src.utils.utils import (normalize_residual,
+                        denormalize_residual, normalize_to_minus1_1_, denormalize_from_minus1_1_)
 
-def normalize_to_minus1_1_(x, ref_min=None, ref_max=None):
-    B = x.size(0)
-    dims = list(range(1, x.dim()))  # normalize over all but batch
-    if ref_min is None or ref_max is None:
-        x_min = x.view(B, -1).min(dim=1)[0].view(B, *[1]*(x.dim()-1))
-        x_max = x.view(B, -1).max(dim=1)[0].view(B, *[1]*(x.dim()-1))
-    else:
-        x_min = ref_min
-        x_max = ref_max
-    scale = x_max - x_min
-    scale[scale == 0] = 1.0
-    x.sub_(x_min).div_(scale).mul_(2).sub_(1)
-    return x_min, x_max
+# def normalize_to_minus1_1_(x, ref_min=None, ref_max=None):
+#     B = x.size(0)
+#     dims = list(range(1, x.dim()))  # normalize over all but batch
+#     if ref_min is None or ref_max is None:
+#         x_min = x.view(B, -1).min(dim=1)[0].view(B, *[1]*(x.dim()-1))
+#         x_max = x.view(B, -1).max(dim=1)[0].view(B, *[1]*(x.dim()-1))
+#     else:
+#         x_min = ref_min
+#         x_max = ref_max
+#     scale = x_max - x_min
+#     scale[scale == 0] = 1.0
+#     x.sub_(x_min).div_(scale).mul_(2).sub_(1)
+#     return x_min, x_max
 
 # --- Test Cases ---
 

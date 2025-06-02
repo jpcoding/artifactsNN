@@ -1,19 +1,18 @@
 import sys  
 import os 
 import numpy as np
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../src'))) 
-from data_loader import BinaryNumpyDataset, PairedBinaryNumpyDataset, compute_data_mean, PairedBinaryNumpyDatasetResidual,PairedBinaryNumpyDatasetResidualE
-# from torch_arcnn import ARCNN, ARCNNResidual 
-from model import  ARCNN, SRCNN, DnCNN3D, UNet3D
-from torch.utils.data import DataLoader,random_split
 import torch 
 from torch import nn, optim 
 import glob 
 import argparse
 from types import SimpleNamespace
-from train_model import train_residual_3d 
-from test_model  import test_dncnn3d 
-from torch.utils.data import DataLoader, Subset, RandomSampler
+from torch.utils.data import DataLoader,random_split
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../'))) 
+from src.datasets.data_loader import PairedBinaryNumpyDataset
+from src.models.model import ARCNN, SRCNN, DnCNN3D, UNet3D 
+from src.training.train_model import train_residual_3d
+from src.training.test_model  import test_residual_3d
 
 
 
@@ -37,6 +36,7 @@ parser.add_argument('--num_train', type=int, default=1000, help='number of train
 parser.add_argument('--penalty_fn', type=str, default='range_penalty', help='penalty function')
 parser.add_argument('--penalty_order', type=float, default=2., help='penalty order')  
 parser.add_argument('--load_from_file', type=str, default='yes', help='load from file') 
+parser.add_argument('--num_epoches', type=int, default=100, help='number of epochs') 
 
 args = parser.parse_args()
 model_str = args.model 
@@ -139,7 +139,7 @@ traning_config = SimpleNamespace(
     device=device,
     model=model,
     model_str=model_str,
-    num_epochs=100,
+    num_epochs=args.num_epoches, 
     patience=20,
     lambda_range=args.range_penalty, 
     best_model_path=bestpath, 
@@ -162,4 +162,4 @@ test_config = SimpleNamespace(
     model_str=model_str,
     checkpoint_path = bestpath,
 ) 
-test_dncnn3d(test_config) 
+test_residual_3d(test_config) 
