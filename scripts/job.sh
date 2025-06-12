@@ -1,10 +1,13 @@
 #!/bin/bash -l
-#PBS -N tets_unet
+#PBS -N tets_dncnn
 #PBS -l select=1:ngpus=1
 #PBS -j oe
-#PBS -l walltime=04:00:00
+#PBS -l walltime=10:00:00
 #PBS -A SDR
 #PBS -m bea 
+#PBS -M pujiao@uky.edu
+
+
 
 cd $PBS_O_WORKDIR
 echo Working directory is $PBS_O_WORKDIR
@@ -12,11 +15,17 @@ echo Working directory is $PBS_O_WORKDIR
 source /lcrc/project/SDR/pjiao/apps/miniconda/bin/activate
 conda activate py312
 
+# python ../test/train_residual_3d_zarr.py --data_dir x --shape 64 64 64\
+#  --dtype f32 --entropy None --train yes --outputs_dir /lcrc/project/ECP-EZ/jp/git/arcnn/checkpoints/hurricane_dncnn_no_penalty/ --model dncnn \
+#   --batch_size 8 \
+#   --bestpath /lcrc/project/ECP-EZ/jp/git/arcnn/checkpoints/hurricane_dncnn_no_penalty/best.pth \
+#   --num_epoches 100 
+
 python ../test/train_residual_3d_zarr.py --data_dir x --shape 64 64 64\
- --dtype f32 --entropy None --train yes --outputs_dir /lcrc/project/ECP-EZ/jp/git/arcnn/checkpoints/hurricane_dncnn_no_penalty/ --model dncnn \
+ --dtype f32 --entropy None --train yes --outputs_dir /lcrc/project/ECP-EZ/jp/git/arcnn/checkpoints/hurricane_dncnn_no_penalty_ssz3i/ --model dncnn \
   --batch_size 8 \
-  --bestpath /lcrc/project/ECP-EZ/jp/git/arcnn/checkpoints/hurricane_dncnn_no_penalty/best.pth \
-  --num_epoches 100 
+  --bestpath /lcrc/project/ECP-EZ/jp/git/arcnn/checkpoints/hurricane_dncnn_no_penalty_ssz3i/best.pth \
+  --num_epoches 100 --compressor sz3i --eb 5e-03 
 
 # python train_residual_3d.py  \
 #  --input_dir /lcrc/project/SDR/pjiao/data/cnn_train/vx3d/velocityx.f32/quantized_data/ \

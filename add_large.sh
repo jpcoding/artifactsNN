@@ -3,7 +3,7 @@
 #!/bin/bash
 
 # Define the size threshold (e.g., 10M for 10 MB)
-SIZE_THRESHOLD="+50M"
+SIZE_THRESHOLD="+99M"
 
 # Find all files larger than the threshold and add them to .gitignore
 find . -type f -size $SIZE_THRESHOLD | while read -r file; do

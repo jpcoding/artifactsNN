@@ -36,6 +36,8 @@ parser.add_argument('--num_train', type=int, default=1000, help='number of train
 parser.add_argument('--penalty_fn', type=str, default='range_penalty', help='penalty function')
 parser.add_argument('--penalty_order', type=float, default=2., help='penalty order')  
 parser.add_argument('--num_epoches', type=int, default=100, help='number of epochs') 
+parser.add_argument('--compressor', type=str, default='cusz', help='compressor used for the data')
+parser.add_argument('--eb', type=str, default='5e-03', help='error bound for the compressor') 
 
 
 args = parser.parse_args()
@@ -58,8 +60,8 @@ zarr_path = '/lcrc/project/ECP-EZ/jp/git/arcnn/data/hurricane.zarr'
 
 field_names = ['P']
 
-compressors = ['cusz'] 
-ebs = ['5e-03']
+compressors = [args.compressor]  # Use the compressor specified in the command line argument
+ebs = [args.eb]  # Use the error bound specified in the command line argument
 
 data_shape = [100,500,500] # z, y, x 
 stride = 32 

@@ -4,5 +4,6 @@
   },
   "files.watcherExclude": {
     "data/**": true
-  }
+  },
+  "python.analysis.exclude": ["data/**"]
 }

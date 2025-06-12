@@ -5,3 +5,4 @@ __pycache__/test/weights/vx3d_miranda_unet_no_penalty_orig.pth
 test_bak/weights/vx3d_miranda_unet_no_penalty_orig.pth
 test_bak/weights/vx3d_miranda_unet_no_penalty.pth
 test/weights/vx3d_miranda_unet_no_penalty.pth
+*[0-9]*.pth

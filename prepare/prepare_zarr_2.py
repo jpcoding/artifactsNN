@@ -72,11 +72,13 @@ def _compression_decompression_pipeline(
     cr = None
     try:
         if compressor_name_str.lower() == 'sz3l':
-            decompressed_result, cr = sz3(original_data_for_comparison, error_bound, original_shape, config='../debug/configs/sz3_interp.config') 
+            decompressed_result, cr = sz3(original_data_for_comparison, error_bound, original_shape, config='../debug/configs/sz3_lorenzo.config') 
         elif compressor_name_str.lower() == 'edt':
             pass
         elif compressor_name_str.lower() == 'cusz':
             decompressed_result, cr = cusz(original_data_for_comparison, error_bound, original_shape)
+        elif compressor_name_str.lower() == 'sz3i':
+            decompressed_result, cr = sz3(original_data_for_comparison, error_bound, original_shape, config='../debug/configs/sz3_interp.config') 
         else:
             raise ValueError(f"Unknown compressor type '{compressor_name_str}'.")
         compression_successful = True
@@ -109,7 +111,7 @@ def _compression_decompression_pipeline(
 def process_file_and_compress_sync(
     writer, file_path, timestep, field, shape,
     compress_executor,
-    compressor_configurations
+    compressor_configurations, process_original=True 
 ):
     try:
         original_data = read_f32_file_sync(file_path, shape)
@@ -118,7 +120,8 @@ def process_file_and_compress_sync(
         return f"Skipped: {file_path}"
 
     print(f"Processing {file_path}")
-    writer.add_original(field, timestep, original_data, {'data_type': 'original', 'source_file': str(file_path)})
+    if process_original:  
+        writer.add_original(field, timestep, original_data, {'data_type': 'original', 'source_file': str(file_path)})
 
     compression_futures = []
     details = []
@@ -183,9 +186,16 @@ def main_sync():
     file_extension = "f32"
     total_timesteps = 48
     field_names = ['CLOUD','P','PRECIP','QCLOUD','QGRAUP','QICE','QRAIN','QSNOW','QVAPOR','TC','U','V','W']
+    # total_timesteps = 1
+    # field_names = ['CLOUD']
+
     data_shape = (100, 500, 500)
     zarr_chunk_shape = (64, 64, 64)
-    compressor_configs = [("cusz", cusz, [5e-3])]
+    # compressor_configs = [("cusz", cusz, [5e-3])]
+    compressor_configs = [
+        ("sz3i", sz3, [1e-2]),
+    ]
+    process_original = False
 
     field_names = [f.upper() for f in field_names]
     dataset_path = Path(dataset_path_str)
@@ -206,7 +216,7 @@ def main_sync():
                 file_executor.submit(
                     process_file_and_compress_sync,
                     writer, file_path, timestep, field, data_shape,
-                    compress_executor, compressor_configs
+                    compress_executor, compressor_configs, process_original
                 )
             )
 

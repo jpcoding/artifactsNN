@@ -1,0 +1,81 @@
+Working directory is /lcrc/project/ECP-EZ/jp/git/arcnn/scripts
+yes
+num of samples:  392
+Total training samples: 3136
+Total validation samples: 784
+[Epoch 1/100] Train Loss: 8.1968e-02 | Val Loss: 7.7228e-02
+[Epoch 2/100] Train Loss: 7.5428e-02 | Val Loss: 7.2766e-02
+[Epoch 3/100] Train Loss: 7.0005e-02 | Val Loss: 7.2472e-02
+[Epoch 4/100] Train Loss: 6.4439e-02 | Val Loss: 6.2180e-02
+[Epoch 5/100] Train Loss: 5.7761e-02 | Val Loss: 5.7282e-02
+[Epoch 6/100] Train Loss: 5.2742e-02 | Val Loss: 6.5534e-02
+[Epoch 7/100] Train Loss: 4.8050e-02 | Val Loss: 5.6808e-02
+[Epoch 8/100] Train Loss: 4.4029e-02 | Val Loss: 4.6531e-02
+[Epoch 9/100] Train Loss: 4.0256e-02 | Val Loss: 4.3090e-02
+[Epoch 10/100] Train Loss: 3.7810e-02 | Val Loss: 4.2581e-02
+[Epoch 11/100] Train Loss: 3.5426e-02 | Val Loss: 3.8671e-02
+[Epoch 12/100] Train Loss: 3.3578e-02 | Val Loss: 3.9805e-02
+[Epoch 13/100] Train Loss: 3.2283e-02 | Val Loss: 3.8125e-02
+[Epoch 14/100] Train Loss: 3.0925e-02 | Val Loss: 3.4395e-02
+[Epoch 15/100] Train Loss: 3.0283e-02 | Val Loss: 3.4606e-02
+[Epoch 16/100] Train Loss: 2.9080e-02 | Val Loss: 3.3627e-02
+[Epoch 17/100] Train Loss: 2.7958e-02 | Val Loss: 3.7440e-02
+[Epoch 18/100] Train Loss: 2.7833e-02 | Val Loss: 3.7020e-02
+[Epoch 19/100] Train Loss: 2.6433e-02 | Val Loss: 3.7128e-02
+[Epoch 20/100] Train Loss: 2.6118e-02 | Val Loss: 3.3838e-02
+[Epoch 21/100] Train Loss: 2.5453e-02 | Val Loss: 3.2794e-02
+[Epoch 22/100] Train Loss: 2.4577e-02 | Val Loss: 3.3738e-02
+[Epoch 23/100] Train Loss: 2.3507e-02 | Val Loss: 3.2509e-02
+[Epoch 24/100] Train Loss: 2.3243e-02 | Val Loss: 3.1655e-02
+[Epoch 25/100] Train Loss: 2.2540e-02 | Val Loss: 3.1243e-02
+[Epoch 26/100] Train Loss: 2.2079e-02 | Val Loss: 3.2113e-02
+[Epoch 27/100] Train Loss: 2.1622e-02 | Val Loss: 3.1135e-02
+[Epoch 28/100] Train Loss: 2.1128e-02 | Val Loss: 3.6265e-02
+[Epoch 29/100] Train Loss: 2.0692e-02 | Val Loss: 3.2316e-02
+[Epoch 30/100] Train Loss: 2.0235e-02 | Val Loss: 3.0527e-02
+[Epoch 31/100] Train Loss: 1.9866e-02 | Val Loss: 3.1794e-02
+[Epoch 32/100] Train Loss: 1.9409e-02 | Val Loss: 2.9623e-02
+[Epoch 33/100] Train Loss: 1.8728e-02 | Val Loss: 3.1637e-02
+[Epoch 34/100] Train Loss: 1.8304e-02 | Val Loss: 3.6624e-02
+[Epoch 35/100] Train Loss: 1.8406e-02 | Val Loss: 3.1671e-02
+[Epoch 36/100] Train Loss: 1.8045e-02 | Val Loss: 3.0644e-02
+[Epoch 37/100] Train Loss: 1.7676e-02 | Val Loss: 3.2086e-02
+[Epoch 38/100] Train Loss: 1.7424e-02 | Val Loss: 3.0303e-02
+[Epoch 39/100] Train Loss: 1.6760e-02 | Val Loss: 3.3893e-02
+[Epoch 40/100] Train Loss: 1.7115e-02 | Val Loss: 3.2711e-02
+[Epoch 41/100] Train Loss: 1.6972e-02 | Val Loss: 3.1832e-02
+[Epoch 42/100] Train Loss: 1.6292e-02 | Val Loss: 2.9728e-02
+[Epoch 43/100] Train Loss: 1.6345e-02 | Val Loss: 3.1872e-02
+[Epoch 44/100] Train Loss: 1.5949e-02 | Val Loss: 3.0520e-02
+[Epoch 45/100] Train Loss: 1.5536e-02 | Val Loss: 2.9090e-02
+[Epoch 46/100] Train Loss: 1.5451e-02 | Val Loss: 3.0342e-02
+[Epoch 47/100] Train Loss: 1.5532e-02 | Val Loss: 3.3718e-02
+[Epoch 48/100] Train Loss: 1.5331e-02 | Val Loss: 2.9421e-02
+[Epoch 49/100] Train Loss: 1.5195e-02 | Val Loss: 2.9792e-02
+[Epoch 50/100] Train Loss: 1.4994e-02 | Val Loss: 3.0185e-02
+[Epoch 51/100] Train Loss: 1.4799e-02 | Val Loss: 3.0139e-02
+[Epoch 52/100] Train Loss: 1.4790e-02 | Val Loss: 3.0060e-02
+[Epoch 53/100] Train Loss: 1.4616e-02 | Val Loss: 2.9469e-02
+[Epoch 54/100] Train Loss: 1.4399e-02 | Val Loss: 2.8245e-02
+[Epoch 55/100] Train Loss: 1.4556e-02 | Val Loss: 2.9268e-02
+[Epoch 56/100] Train Loss: 1.3829e-02 | Val Loss: 2.8659e-02
+[Epoch 57/100] Train Loss: 1.4054e-02 | Val Loss: 2.9210e-02
+[Epoch 58/100] Train Loss: 1.4597e-02 | Val Loss: 3.1078e-02
+[Epoch 59/100] Train Loss: 1.3753e-02 | Val Loss: 2.9172e-02
+[Epoch 60/100] Train Loss: 1.3478e-02 | Val Loss: 2.9360e-02
+[Epoch 61/100] Train Loss: 1.3650e-02 | Val Loss: 3.3859e-02
+[Epoch 62/100] Train Loss: 1.4004e-02 | Val Loss: 3.1223e-02
+[Epoch 63/100] Train Loss: 1.3811e-02 | Val Loss: 3.2671e-02
+[Epoch 64/100] Train Loss: 1.3337e-02 | Val Loss: 2.9826e-02
+[Epoch 65/100] Train Loss: 1.3540e-02 | Val Loss: 3.1881e-02
+[Epoch 66/100] Train Loss: 1.3133e-02 | Val Loss: 2.9291e-02
+[Epoch 67/100] Train Loss: 1.2958e-02 | Val Loss: 2.9257e-02
+[Epoch 68/100] Train Loss: 1.3449e-02 | Val Loss: 3.1458e-02
+[Epoch 69/100] Train Loss: 1.3160e-02 | Val Loss: 3.0544e-02
+[Epoch 70/100] Train Loss: 1.2738e-02 | Val Loss: 2.9349e-02
+[Epoch 71/100] Train Loss: 1.3101e-02 | Val Loss: 2.8636e-02
+[Epoch 72/100] Train Loss: 1.3046e-02 | Val Loss: 2.9355e-02
+[Epoch 73/100] Train Loss: 1.2692e-02 | Val Loss: 2.9183e-02
+[Epoch 74/100] Train Loss: 1.2770e-02 | Val Loss: 2.8925e-02
+Early stopping triggered.
+Best model saved to /lcrc/project/ECP-EZ/jp/git/arcnn/checkpoints/hurricane_unet_no_penalty_ssz3i/best.pth
